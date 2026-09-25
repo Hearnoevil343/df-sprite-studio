@@ -1,0 +1,52 @@
+{
+  "name": "df-sprite-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.cjs",
+  "engines": {
+    "node": ">=23.6"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.ts",
+    "roundtrip": "node tools/roundtrip.ts",
+    "stats": "node tools/vanilla-stats.ts",
+    "studio": "node tools/studio.ts",
+    "start": "npm run build && node tools/studio-server.ts",
+    "dev": "esbuild src/app/main.ts --bundle --outfile=app/dist/main.js --sourcemap --servedir=app --serve=8000",
+    "build": "esbuild src/app/main.ts --bundle --outfile=app/dist/main.js --minify",
+    "typecheck": "tsc --noEmit",
+    "electron": "npm run build && electron .",
+    "dist": "npm run build && electron-builder"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8",
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.63.0",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "dockview-core": "^8.3.1"
+  },
+  "build": {
+    "appId": "com.dfspritestudio.app",
+    "productName": "DF Sprite Studio",
+    "files": [
+      "app/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "portable",
+      "artifactName": "DFSpriteStudio-${version}.exe"
+    }
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "electron@33.4.11": true
+  }
+}

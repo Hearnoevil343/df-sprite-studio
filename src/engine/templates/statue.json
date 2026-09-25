@@ -1,0 +1,10 @@
+{
+  "id": "statue",
+  "name": "Statue (1x2)",
+  "description": "Statue as in vanilla graphics_creatures_surface_statues.txt: one sprite one tile wide and two tall, written as plain x1:y1:x2:y2 (no LARGE_IMAGE).",
+  "header": "STATUE_CREATURE_GRAPHICS",
+  "rect": "plain",
+  "entries": [
+    { "key": "DEFAULT", "token": "DEFAULT", "at": [0, 0], "size": [1, 2] }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "multi-tile-creature",
+  "name": "Multi-tile creature",
+  "description": "Large creature as in vanilla creatures_surface_large (GAZELLE): adult sprites span 3x2 tiles through LARGE_IMAGE:x1:y1:x2:y2, child sprites are one tile.",
+  "header": "CREATURE_GRAPHICS",
+  "rect": "LARGE_IMAGE",
+  "entries": [
+    { "key": "DEFAULT", "token": "DEFAULT", "at": [0, 0], "size": [3, 2], "suffix": ["AS_IS"] },
+    { "key": "CHILD_DEFAULT", "token": "CHILD", "at": [6, 0], "suffix": ["AS_IS", "DEFAULT"], "requires": "DEFAULT" },
+    { "key": "ANIMATED", "token": "ANIMATED", "at": [3, 0], "size": [3, 2], "suffix": ["AS_IS"] },
+    { "key": "CHILD_ANIMATED", "token": "CHILD", "at": [7, 0], "suffix": ["AS_IS", "ANIMATED"], "requires": "ANIMATED" },
+    { "key": "CORPSE", "token": "CORPSE", "at": [6, 1], "suffix": ["AS_IS"] },
+    { "key": "CHILD_CORPSE", "token": "CHILD", "at": [7, 1], "suffix": ["AS_IS", "CORPSE"], "requires": "CORPSE" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "vermin",
+  "name": "Vermin and swarms",
+  "description": "Vermin sprites as in vanilla graphics_creatures_small.txt: one tile each, no AS_IS. Light and hive entries are off by default; turn them on with include.",
+  "header": "CREATURE_GRAPHICS",
+  "rect": "LARGE_IMAGE",
+  "entries": [
+    { "key": "VERMIN", "token": "VERMIN", "at": [0, 0] },
+    { "key": "SWARM_SMALL", "token": "SWARM_SMALL", "at": [1, 0] },
+    { "key": "SWARM_MEDIUM", "token": "SWARM_MEDIUM", "at": [2, 0] },
+    { "key": "SWARM_LARGE", "token": "SWARM_LARGE", "at": [3, 0] },
+    { "key": "REMAINS", "token": "REMAINS", "at": [4, 0] },
+    { "key": "VERMIN_ALT", "token": "VERMIN_ALT", "at": [0, 1], "default": false, "note": "Alternates with VERMIN, one second cycle." },
+    { "key": "LIGHT_VERMIN", "token": "LIGHT_VERMIN", "at": [1, 1], "default": false, "note": "Glowing vermin such as fireflies." },
+    { "key": "LIGHT_VERMIN_ALT", "token": "LIGHT_VERMIN_ALT", "at": [2, 1], "default": false },
+    { "key": "LIGHT_SWARM_SMALL", "token": "LIGHT_SWARM_SMALL", "at": [3, 1], "default": false },
+    { "key": "LIGHT_SWARM_MEDIUM", "token": "LIGHT_SWARM_MEDIUM", "at": [4, 1], "default": false },
+    { "key": "LIGHT_SWARM_LARGE", "token": "LIGHT_SWARM_LARGE", "at": [5, 1], "default": false },
+    { "key": "HIVE", "token": "HIVE", "at": [5, 0], "default": false }
+  ]
+}

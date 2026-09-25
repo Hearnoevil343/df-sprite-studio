@@ -1,0 +1,178 @@
+{
+ "byToken": {
+  "ANIMATED": {
+   "sprites": 337,
+   "colourCount": [
+    7.7,
+    143.8
+   ],
+   "outlineLightShare": [
+    0,
+    0
+   ],
+   "footBaseline": [
+    22,
+    31
+   ]
+  },
+  "CHILD": {
+   "sprites": 813,
+   "colourCount": [
+    4.2,
+    94.3
+   ],
+   "outlineLightShare": [
+    0,
+    0
+   ],
+   "footBaseline": [
+    21,
+    31
+   ]
+  },
+  "CORPSE": {
+   "sprites": 730,
+   "colourCount": [
+    5,
+    45
+   ],
+   "outlineLightShare": [
+    0,
+    0.1
+   ],
+   "footBaseline": [
+    23,
+    31
+   ]
+  },
+  "DEFAULT": {
+   "sprites": 216,
+   "colourCount": [
+    5,
+    20.1
+   ],
+   "outlineLightShare": [
+    0,
+    0
+   ],
+   "footBaseline": [
+    24.3,
+    31
+   ]
+  },
+  "VERMIN": {
+   "sprites": 131,
+   "colourCount": [
+    3,
+    15
+   ],
+   "outlineLightShare": [
+    0,
+    0.1
+   ],
+   "footBaseline": [
+    18,
+    30
+   ]
+  },
+  "ALL": {
+   "sprites": 2227,
+   "colourCount": [
+    4,
+    84
+   ],
+   "outlineLightShare": [
+    0,
+    0.1
+   ],
+   "footBaseline": [
+    21,
+    31
+   ]
+  }
+ },
+ "floors": [
+  {
+   "id": "grass",
+   "label": "Grass",
+   "colours": [
+    [
+     47,
+     61,
+     54,
+     255
+    ],
+    [
+     66,
+     85,
+     49,
+     255
+    ],
+    [
+     83,
+     108,
+     50,
+     255
+    ],
+    [
+     92,
+     115,
+     52,
+     255
+    ],
+    [
+     120,
+     135,
+     73,
+     255
+    ],
+    [
+     73,
+     99,
+     52,
+     255
+    ]
+   ],
+   "distanceThreshold": 0,
+   "closeShare": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "stone",
+   "label": "Stone",
+   "colours": [
+    [
+     78,
+     78,
+     82,
+     255
+    ],
+    [
+     96,
+     102,
+     113,
+     255
+    ],
+    [
+     97,
+     109,
+     118,
+     255
+    ],
+    [
+     108,
+     123,
+     130,
+     255
+    ]
+   ],
+   "distanceThreshold": 0.1,
+   "closeShare": [
+    0,
+    1
+   ]
+  }
+ ]
+}

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>DF Sprite Studio</title>
+<link rel="stylesheet" href="vendor/dockview.css" />
+<style>
+  :root { color-scheme: dark; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #1e1e1e;
+    color: #ddd;
+  }
+  button {
+    background: #2c2c2c;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  button.active { background: #4a6fa5; border-color: #6a8fc5; }
+  select, input[type="text"], input[type="number"], input[type="file"] {
+    background: #2c2c2c;
+    color: #ddd;
+    border: 1px solid #444;
+    border-radius: 3px;
+  }
+
+  /* --- Shell: menu bar / workspace (tool strip + dock) / status bar --- */
+  #app { display: flex; flex-direction: column; height: 100vh; }
+  #menubar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+  }
+  .menubar-label { color: #8ab4f8; font-size: 11px; text-transform: uppercase; margin-left: 10px; }
+  .menubar-label:first-child { margin-left: 0; }
+  .menubar-title { margin-left: auto; color: #999; font-size: 12px; }
+  #workspace { display: flex; flex: 1; min-height: 0; }
+  #toolstrip {
+    width: 150px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 8px;
+    box-sizing: border-box;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+  }
+  #toolstrip.hidden { display: none; }
+  .toolstrip-btn { width: 100%; text-align: center; }
+  .toolstrip-divider { height: 1px; background: #333; margin: 4px 0; }
+  #dock { flex: 1; min-width: 0; }
+  #dock.hidden { display: none; }
+  #statusbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 10px;
+    border-top: 1px solid #333;
+    font-size: 12px;
+    color: #aaa;
+    flex-shrink: 0;
+  }
+  .statusbar-item { white-space: nowrap; }
+  .statusbar-dirty { color: #f6b756; margin-left: auto; }
+
+  /* Every dockview panel's content div, filled by a panel factory */
+  .dock-panel-content {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+  }
+  #canvas-panel {
+    padding: 0;
+    overflow: auto;
+  }
+  #main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #canvas { image-rendering: pixelated; border: 1px solid #444; }
+
+  .properties-section { display: flex; flex-direction: column; gap: 4px; }
+  #shading { flex-direction: row; flex-wrap: wrap; align-items: center; }
+
+  /* --- Palette: transparent swatch then one horizontal row per ramp ---
+     Its own dockable panel, so swatches read at a usable size instead of
+     squeezed into the 96px tool strip. */
+  #palette { display: flex; flex-direction: column; gap: 6px; }
+  .ramp-row { display: flex; flex-direction: row; flex-wrap: wrap; gap: 5px; }
+  .swatch {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid #444;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .swatch.selected { outline: 2px solid #fff; outline-offset: 1px; }
+  .palette-heading { margin: 4px 0 0; font-size: 11px; color: #999; text-transform: uppercase; }
+  .palette-add { display: flex; flex-direction: row; align-items: center; gap: 4px; }
+  .palette-hex { width: 70px; }
+
+  .ref-canvas { image-rendering: pixelated; border: 1px solid #444; }
+  .ref-status { color: #999; }
+  .ref-lineup { display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; }
+  .ref-thumb { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; font-size: 10px; }
+  .ref-thumb canvas { image-rendering: pixelated; border: 1px solid #444; background: #2c2c2c; }
+  .ref-thumb-missing { cursor: not-allowed; }
+  .ref-thumb-missing canvas { opacity: 0.3; }
+  #creatures, #mod { display: flex; flex-direction: column; gap: 6px; }
+  .creature-row { display: flex; gap: 4px; }
+  .creature-row button:first-child { flex: 1; text-align: left; }
+  .creature-row button.active { background: #4a6fa5; border-color: #6a8fc5; }
+  #layers { display: flex; flex-direction: column; gap: 4px; }
+  #layers h3 { margin: 10px 0 2px; padding-top: 8px; border-top: 1px solid #333; font-size: 12px; text-transform: uppercase; color: #bbb; }
+  .lt-group { cursor: pointer; padding: 2px; color: #ccd; display: flex; align-items: center; gap: 6px; }
+  .lt-group-label { flex: 1; }
+  .lt-layers { margin-left: 12px; }
+  .lt-note { color: #999; font-size: 11px; }
+  .lt-head { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  #checklist { display: flex; flex-direction: column; gap: 6px; }
+  .checklist-row { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 2px; border-radius: 3px; }
+  .checklist-row.active { background: #333; }
+  .checklist-thumb { image-rendering: pixelated; border: 1px solid #444; background: #2c2c2c; width: 24px; height: 24px; }
+  .vermin-preview { border-top: 1px solid #333; padding-top: 8px; }
+  .vermin-preview canvas { image-rendering: pixelated; border: 1px solid #444; background: #2c2c2c; }
+  #figure { display: none; flex-direction: column; gap: 6px; }
+  #scene { display: flex; flex-direction: column; gap: 6px; }
+  .scene-status { color: #999; }
+  .scene-canvas { image-rendering: pixelated; border: 1px solid #444; background: #2c2c2c; }
+  .figure-controls { display: flex; flex-direction: column; gap: 4px; }
+  .figure-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .figure-row input[type="text"], .figure-row input[type="number"] { width: 90px; }
+  .figure-section { color: #8ab4f8; font-size: 11px; margin-top: 6px; text-transform: uppercase; }
+  .figure-group { border-top: 1px solid #2c2c2c; padding-top: 4px; margin-top: 2px; display: flex; flex-direction: column; gap: 2px; }
+  .figure-group-label { color: #ccd; font-size: 11px; }
+  .figure-notes { font-size: 11px; }
+  .figure-note { color: #f6b756; }
+  .mod-form { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+  .mod-status { color: #999; white-space: pre-wrap; font-size: 12px; margin: 6px 0 10px; }
+  #finder-section > summary { margin: 10px 0 2px; padding-top: 8px; border-top: 1px solid #333; font-size: 12px; text-transform: uppercase; color: #bbb; cursor: pointer; }
+  #finder { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+  .finder-status { color: #999; }
+  .finder-row { display: flex; flex-direction: column; gap: 2px; padding: 4px 0; border-bottom: 1px solid #2c2c2c; }
+  .style-status { color: #999; }
+  .style-row { display: flex; gap: 6px; padding: 3px 4px; border-radius: 3px; cursor: pointer; }
+  .style-row:hover { background: #2a2a2a; }
+  .style-row.active { background: #4a6fa5; }
+  .style-severity { text-transform: uppercase; font-weight: bold; color: #f6b756; flex-shrink: 0; }
+  .style-error .style-severity { color: #e06060; }
+  .style-info .style-severity { color: #8ab4f8; }
+  .checklist-draft { cursor: default; justify-content: space-between; }
+  .checklist-draft button { margin-left: 6px; }
+  .gen-panel { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+  .gen-desc { width: 100%; box-sizing: border-box; background: #2c2c2c; color: #ddd; border: 1px solid #444; padding: 4px; }
+  .gen-row { display: flex; gap: 4px; flex-wrap: wrap; }
+  .gen-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .gen-cand { image-rendering: pixelated; border: 1px solid #444; cursor: pointer; width: 96px; height: 96px; }
+  .gen-cand.rejected { opacity: 0.35; cursor: not-allowed; }
+  .file-picker { display: inline-flex; align-items: center; gap: 6px; }
+  .file-picker-name { color: #999; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .checklist-reduce-input { margin-left: auto; }
+  .checklist-reduce-input .file-picker-name { max-width: 60px; }
+  .dflook-panel { margin-top: 14px; padding-top: 10px; border-top: 1px solid #444; display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+  .dflook-rows { display: flex; flex-direction: column; gap: 2px; }
+  .dflook-row { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .dflook-row input[type=number] { background: #2c2c2c; color: #ddd; border: 1px solid #444; }
+  .dflook-warn { color: #e0a458; font-size: 11px; }
+  .dflook-preview { display: flex; gap: 10px; }
+  .dflook-preview > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .dflook-canvas { image-rendering: pixelated; border: 1px solid #444; max-width: 220px; max-height: 220px; background: #2c2c2c; }
+  .dflook-status { color: #999; font-size: 11px; }
+</style>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="dist/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "id": "simple-creature",
+  "name": "Simple creature",
+  "description": "One 32x32 tile per sprite, laid out in a row like vanilla creatures_surface (6 tiles wide) plus a ghost tile. Each CHILD names the sprite it replaces for young creatures.",
+  "header": "CREATURE_GRAPHICS",
+  "rect": "LARGE_IMAGE",
+  "entries": [
+    { "key": "DEFAULT", "token": "DEFAULT", "at": [0, 0], "suffix": ["AS_IS"] },
+    { "key": "CHILD_DEFAULT", "token": "CHILD", "at": [1, 0], "suffix": ["AS_IS", "DEFAULT"], "requires": "DEFAULT" },
+    { "key": "ANIMATED", "token": "ANIMATED", "at": [2, 0], "suffix": ["AS_IS"] },
+    { "key": "CHILD_ANIMATED", "token": "CHILD", "at": [3, 0], "suffix": ["AS_IS", "ANIMATED"], "requires": "ANIMATED" },
+    { "key": "CORPSE", "token": "CORPSE", "at": [4, 0], "suffix": ["AS_IS"] },
+    { "key": "CHILD_CORPSE", "token": "CHILD", "at": [5, 0], "suffix": ["AS_IS", "CORPSE"], "requires": "CORPSE" },
+    { "key": "GHOST", "token": "GHOST", "at": [6, 0], "suffix": ["AS_IS"], "note": "Not used by any vanilla raw; token from the DF wiki, not yet checked in game." }
+  ]
+}
